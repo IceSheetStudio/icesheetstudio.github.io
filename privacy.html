@@ -83,7 +83,7 @@ footer {
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle"></a>
-    <a href="index.html" id="homeBtn"></a>
+    <a href="#" id="homeBtn"></a>
 </div>
 
 <h1 id="title"></h1>
@@ -229,8 +229,27 @@ function renderPolicy(lang){
 renderPolicy(currentLang);
 
 menuBtn.addEventListener('click',()=>{dropdownMenu.style.display = dropdownMenu.style.display==='block'?'none':'block';});
-langToggle.addEventListener('click',e=>{e.preventDefault();currentLang = currentLang==='zh-CN'?'en':'zh-CN';localStorage.setItem('baiMahjongLang',currentLang);renderPolicy(currentLang);dropdownMenu.style.display='none';});
-document.addEventListener('click',e=>{if(!menuBtn.contains(e.target)&&!dropdownMenu.contains(e.target)){dropdownMenu.style.display='none';}});
+
+langToggle.addEventListener('click',e=>{
+    e.preventDefault();
+    currentLang = currentLang==='zh-CN'?'en':'zh-CN';
+    localStorage.setItem('baiMahjongLang',currentLang);
+    renderPolicy(currentLang);
+    dropdownMenu.style.display='none';
+});
+
+// ✅ 新增：点击首页 JS 跳转
+homeBtn.addEventListener('click', e=>{
+    e.preventDefault();
+    window.location.href = 'index.html';
+    dropdownMenu.style.display='none';
+});
+
+document.addEventListener('click',e=>{
+    if(!menuBtn.contains(e.target)&&!dropdownMenu.contains(e.target)){
+        dropdownMenu.style.display='none';
+    }
+});
 </script>
 </body>
 </html>
