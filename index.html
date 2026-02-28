@@ -111,12 +111,12 @@ footer {
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle">🌐 切换语言</a>
-    <a href="privacy.html" id="privacyLink">🛡️ 隐私政策</a>
+    <a href="privacy.html" id="privacyLink" target="_blank" rel="noopener noreferrer">🛡️ 隐私政策</a>
 </div>
 
 <h1 id="title"></h1>
 <div class="game-desc" id="gameDesc"></div>
-<a class="download-btn" id="downloadBtn"></a>
+<a class="download-btn" id="downloadBtn" target="_blank" rel="noopener noreferrer"></a>
 <div class="dev-email" id="devEmail"></div>
 <footer id="footer"></footer>
 
@@ -151,7 +151,7 @@ const textData = {
         downloadText: 'Open in App Store',
         devEmail: `<span>Developer: Ge Hong</span><span>📧 Contact Email: <a href="mailto:gehong01@gmail.com" rel="noopener noreferrer">gehong01@gmail.com</a></span>`,
         gameDesc: `<p>Game Background:</p>
-                   <p>This game was independently developed by Ge Hong, inspired by the single-player Mahjong game that the developer’s grandmother played daily, which she fondly called "Bai Mahjong."</p>
+                   <p>This game was independently developed by Ge Hong, inspired by the single-player Mahjong game that his grandmother played daily, called "Bai Mahjong."</p>
                    <p>The developer strives to faithfully recreate this classic Mahjong experience. If you enjoy it, feel free to share it with your family and friends so that more people can play Bai Mahjong.</p>`,
         footer: `© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved`,
         btnText: '🌐 中文',
@@ -168,7 +168,7 @@ function renderText(lang){
     downloadBtn.href = textData[lang].appStoreLink;
     langToggle.textContent = textData[lang].btnText;
     privacyLink.textContent = textData[lang].privacyText;
-    document.getElementById('footer').textContent = textData[lang].footer;
+    document.getElementById('footer').textContent = textData[lang].footer; // ✅ 显示版权
 }
 renderText(currentLang);
 
