@@ -44,6 +44,7 @@
     }
     .download-btn:hover { background: #1b9aff; }
 
+    /* ===== 改动：菜单按钮统一样式 ===== */
     .menu-btn {
         position: fixed;
         top: 20px;
@@ -51,10 +52,10 @@
         background: #0a84ff;
         color: white;
         border: none;
-        border-radius: 8px;
-        padding: 6px 10px;
+        border-radius: 8px;      /* 与隐私页面一致 */
+        padding: 6px 10px;       /* 与隐私页面一致 */
         cursor: pointer;
-        font-size: 1.1em;
+        font-size: 1em;          /* 与隐私页面一致 */
         z-index: 1000;
         transition: background 0.3s;
     }
@@ -80,6 +81,7 @@
         text-decoration: none;
         border-bottom: 1px solid #4a4a4c;
         transition: background 0.2s;
+        font-size: 1em;
     }
     .dropdown-menu a:last-child { border-bottom: none; }
     .dropdown-menu a:hover { background: #1b9aff; }
@@ -124,11 +126,9 @@ const langToggle = document.getElementById('langToggle');
 const privacyLink = document.getElementById('privacyLink');
 const downloadBtn = document.getElementById('downloadBtn');
 
-// 读取 localStorage 记住的语言
-let currentLang = localStorage.getItem('lang') || 'en';
-
-// 如果没有记忆，按浏览器语言自动切换
-if (!localStorage.getItem('lang')) {
+// 获取语言设置
+let currentLang = localStorage.getItem('baiMahjongLang') || 'en';
+if (!localStorage.getItem('baiMahjongLang')) {
     const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
     if(userLang.startsWith('zh')) currentLang = 'zh-CN';
 }
@@ -184,12 +184,12 @@ menuBtn.addEventListener('click', () => {
 langToggle.addEventListener('click', (e) => {
     e.preventDefault();
     currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
-    localStorage.setItem('lang', currentLang); // 记住选择
+    localStorage.setItem('baiMahjongLang', currentLang);
     renderText(currentLang);
     dropdownMenu.style.display = 'none';
 });
 
-// 点击其他地方关闭菜单
+// 点击页面其他地方关闭菜单
 document.addEventListener('click', (e) => {
     if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.style.display = 'none';
