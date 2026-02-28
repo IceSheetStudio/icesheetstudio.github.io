@@ -124,10 +124,14 @@ const langToggle = document.getElementById('langToggle');
 const privacyLink = document.getElementById('privacyLink');
 const downloadBtn = document.getElementById('downloadBtn');
 
-// 默认英文，如果浏览器语言是中文（简体或繁体）就显示中文
-let currentLang = 'en';
-const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-if(userLang.startsWith('zh')) currentLang = 'zh-CN';
+// 读取 localStorage 记住的语言
+let currentLang = localStorage.getItem('lang') || 'en';
+
+// 如果没有记忆，按浏览器语言自动切换
+if (!localStorage.getItem('lang')) {
+    const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
+    if(userLang.startsWith('zh')) currentLang = 'zh-CN';
+}
 
 const textData = {
     'zh-CN': {
@@ -180,6 +184,7 @@ menuBtn.addEventListener('click', () => {
 langToggle.addEventListener('click', (e) => {
     e.preventDefault();
     currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+    localStorage.setItem('lang', currentLang); // 记住选择
     renderText(currentLang);
     dropdownMenu.style.display = 'none';
 });
