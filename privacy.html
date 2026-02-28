@@ -67,7 +67,13 @@
     .policy-content h3 { color: #f2f2f2; margin-top: 1.8em; }
     .policy-content p, .policy-content li { color: #ddd; }
     .policy-content ul { margin-left: 20px; }
-    footer { margin-top: 40px; font-size: 0.9em; color: #aaa; text-align: center; }
+    footer {
+        margin-top: 40px;
+        font-size: 0.9em;
+        color: #aaa;
+        text-align: center;
+        white-space: pre-line; /* 保留换行 */
+    }
     @media (max-width: 600px) { .policy-content { padding: 20px 15px; } }
 </style>
 </head>
@@ -100,7 +106,9 @@ const policyData = {
     'zh-CN': {
         title: '摆麻将 - 隐私政策',
         effectiveDate: '生效日期：2026 年 2 月 28 日',
-        footer: '© 2026 Ge Hong / IceSheet Studio · 版权所有',
+        footer: `        © 2026 Ge Hong / IceSheet Studio
+                 版权所有
+        `,
         btn: '🌐 English',
         homeBtn: '🏠 首页',
         content: `
@@ -155,7 +163,9 @@ const policyData = {
     'en': {
         title: 'Bai Mahjong - Privacy Policy',
         effectiveDate: 'Effective Date: February 28, 2026',
-        footer: '© 2026 Ge Hong / IceSheet Studio · All Rights Reserved',
+        footer: `        © 2026 Ge Hong / IceSheet Studio
+         All Rights Reserved
+        `,
         btn: '🌐 中文',
         homeBtn: '🏠 Home',
         content: `
