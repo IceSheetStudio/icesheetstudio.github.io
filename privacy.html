@@ -1,9 +1,9 @@
 <!DOCTYPE html>
-<html lang="zh-CN">
+<html lang="en">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>隐私政策 / Privacy Policy - Bai Mahjong</title>
+<title>Bai Mahjong - Privacy Policy</title>
 <style>
     body {
         font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
@@ -11,19 +11,19 @@
         color: #f2f2f2;
         text-align: center;
         padding: 60px 20px;
-        line-height: 1.6;
+        line-height: 1.7;
         transition: all 0.3s;
     }
 
     h1 {
         font-size: 2em;
-        margin-bottom: 0.2em;
+        margin-bottom: 0.3em;
     }
 
-    h2 {
-        font-size: 1.2em;
-        color: #ccc;
-        margin-bottom: 1em;
+    .effective-date {
+        color: #bbb;
+        margin-bottom: 2em;
+        font-size: 0.95em;
     }
 
     a {
@@ -47,6 +47,7 @@
         cursor: pointer;
         font-size: 0.9em;
         transition: background 0.3s;
+        z-index: 1000;
     }
 
     .lang-btn:hover {
@@ -64,7 +65,7 @@
 
     .policy-content h3 {
         color: #f2f2f2;
-        margin-top: 1.5em;
+        margin-top: 1.8em;
     }
 
     .policy-content p, .policy-content li {
@@ -79,6 +80,13 @@
         margin-top: 40px;
         font-size: 0.9em;
         color: #aaa;
+        text-align: center;
+    }
+
+    @media (max-width: 600px) {
+        .policy-content {
+            padding: 20px 15px;
+        }
     }
 </style>
 </head>
@@ -87,7 +95,7 @@
 <button class="lang-btn" id="langBtn"></button>
 
 <h1 id="title"></h1>
-<h2 id="subtitle"></h2>
+<div class="effective-date" id="effectiveDate"></div>
 
 <div class="policy-content" id="policyContent"></div>
 
@@ -96,149 +104,125 @@
 <script>
 const langBtn = document.getElementById('langBtn');
 
-// 自动识别浏览器语言
-const userLang = navigator.language || navigator.userLanguage;
-let currentLang = userLang.startsWith('zh') ? 'zh' : 'en';
+// 默认主语言英文
+let currentLang = 'en';
 
+// 自动识别浏览器语言，中文显示简体
+const userLang = (navigator.language || navigator.userLanguage).toLowerCase();
+if(userLang.startsWith('zh')) currentLang = 'zh-CN';
+
+// 数据
 const policyData = {
-    zh: {
-        title: '隐私政策',
-        subtitle: 'Bai Mahjong - 数据与隐私说明',
-        footer: '© 2026 Ge Hong · All Rights Reserved',
+    "zh-CN": {
+        title: '摆麻将 - 隐私政策',
+        effectiveDate: '生效日期：2026 年 2 月 21 日',
+        footer: '© 2026 葛洪 · 版权所有',
         btn: '🌐 English',
         content: `
 <h3>1. 信息收集与使用</h3>
-<p>我们致力于提供简洁、安全的游戏体验：</p>
 <ul>
-<li>不主动收集个人信息（PII），如姓名、邮箱、手机号或精准位置。</li>
-<li>游戏进度和本地设置仅保存在您的设备上。</li>
+<li><strong>不收集个人身份信息：</strong>我们不会主动收集、存储或上传您的姓名、电子邮件、电话号码或地理位置等个人可识别信息（PII）。</li>
+<li><strong>本地数据存储：</strong>您的游戏进度和本地设置仅存储在您的设备中。</li>
 </ul>
 
-<h3>2. 第三方服务</h3>
-<p>游戏使用以下第三方 SDK 提供广告和功能：</p>
-
-<h4>Apple Game Center</h4>
+<h3>2. 第三方广告服务</h3>
 <ul>
-<li>提供排行榜和成就系统。</li>
-<li>相关数据（昵称、分数）由 Apple 管理，我们不访问 Apple ID 密码或私人信息。</li>
+<li><strong>Google AdMob：</strong>
+    <ul>
+        <li><strong>数据收集：</strong>AdMob 可能收集匿名技术信息，包括设备标识符（如 IDFA，仅在您授权后）、IP 地址及广告互动数据。</li>
+        <li><strong>用途：</strong>仅用于广告展示、频次控制、反欺诈和匿名统计。</li>
+        <li><strong>用户控制：</strong>支持 iOS 的“要求 App 不跟踪”（App Tracking Transparency）。拒绝授权后，AdMob 不会访问您的 IDFA 进行跨应用追踪。</li>
+        <li>详细请参阅 <a href="https://policies.google.com/privacy" target="_blank">Google 隐私政策</a>。</li>
+    </ul>
+</li>
 </ul>
 
-<h4>Google AdMob</h4>
+<h3>3. Game Center 数据</h3>
+<p>本游戏通过 Apple Game Center 提供排行榜和成就系统。相关数据（如游戏昵称和分数）由 Apple 管理，我们无法访问您的 Apple ID 或个人信息。详情请参阅 <a href="https://www.apple.com/legal/privacy/" target="_blank">Apple 隐私政策</a>。</p>
+
+<h3>4. 设备权限说明</h3>
 <ul>
-<li>可能收集设备标识符（IDFA，经授权）、IP、广告互动数据。</li>
-<li>用于广告投放、频次控制、反作弊及性能统计。</li>
-<li>详情请参阅 Google 隐私政策：
-<a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></li>
+<li><strong>网络访问权限：</strong>用于加载广告内容以及同步 Game Center 排行榜积分。</li>
+<li><strong>App 追踪透明度 (ATT)：</strong>用于请求广告追踪授权，以展示更相关的广告。</li>
 </ul>
 
-<h4>Unity Ads</h4>
+<h3>5. 数据安全与保留</h3>
 <ul>
-<li>可能收集设备标识符、IP、广告互动数据（IDFA 需用户授权）。</li>
-<li>用于广告投放、统计分析及防作弊。</li>
-<li>详情请参阅 Unity 隐私政策：
-<a href="https://unity.com/legal/privacy-policy" target="_blank">https://unity.com/legal/privacy-policy</a></li>
+<li>不设立云端服务器，因此<strong>不收集也不存储</strong>用户个人数据在服务器上。</li>
+<li>游戏记录随 App 卸载即物理删除。第三方服务的数据保留请参照官方隐私协议。</li>
 </ul>
 
-<h4>AppLovin</h4>
+<h3>6. 未成年人保护</h3>
 <ul>
-<li>可能收集设备标识符、IP、广告互动数据（IDFA 需用户授权）。</li>
-<li>用于广告投放、分析、性能统计及反作弊。</li>
-<li>详情请参阅 AppLovin 隐私政策：
-<a href="https://www.applovin.com/privacy/" target="_blank">https://www.applovin.com/privacy/</a></li>
+<li>游戏适合所有年龄，不包含 IAP 或社交聊天功能。</li>
+<li>不鼓励或引导未成年人提供个人信息，遵守儿童隐私保护法规（13 岁以下儿童特别保护）。</li>
 </ul>
 
-<h3>3. iOS 追踪透明度 (ATT)</h3>
-<p>游戏支持 iOS ATT 框架。若拒绝授权，广告 ID（IDFA）不会被用于跨应用追踪。</p>
+<h3>7. 政策更新</h3>
+<p>若未来版本引入新的功能或服务，我们将更新本政策并在本页面发布，建议您定期查看。</p>
 
-<h3>4. GDPR（欧洲用户）</h3>
-<p>EEA 用户可请求访问、更正、删除个人数据，或撤回同意。</p>
-
-<h3>5. CCPA（加州用户）</h3>
-<p>加州用户可请求披露收集的个人信息类别，并要求删除。<strong>我们不向第三方出售用户数据。</strong></p>
-
-<h3>6. 儿童隐私</h3>
-<p>本游戏适合所有年龄，不会收集 13 岁以下儿童个人信息。</p>
-
-<h3>7. 数据安全</h3>
-<p>我们不维护云端用户数据，所有数据保存在设备上，卸载游戏时将被清除。</p>
-
-<h3>8. 政策更新</h3>
-<p>本隐私政策会根据新功能或法律要求更新，并在本页发布最新版本。</p>
-
-<h3>9. 联系方式</h3>
-<p>开发者：葛洪<br>📧 邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></p>
-        `
+<h3>8. 联系我们</h3>
+<p>开发者：葛洪<br>邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></p>
+`
     },
-    en: {
-        title: 'Privacy Policy',
-        subtitle: 'Bai Mahjong - Data & Privacy',
+    "en": {
+        title: 'Bai Mahjong - Privacy Policy',
+        effectiveDate: 'Effective Date: February 21, 2026',
         footer: '© 2026 Ge Hong · All Rights Reserved',
         btn: '🌐 中文',
         content: `
 <h3>1. Information Collection and Use</h3>
-<p>We are committed to providing a simple and privacy-respecting gaming experience:</p>
 <ul>
-<li>No direct collection of personally identifiable information (PII) such as name, email, phone number, or precise location.</li>
-<li>Game progress and settings are stored locally on your device only.</li>
+<li><strong>No Collection of PII:</strong> We do not collect, store, or upload personally identifiable information such as name, email, phone number, or location.</li>
+<li><strong>Local Data Storage:</strong> Game progress and settings are stored locally on your device only.</li>
 </ul>
 
-<h3>2. Third-Party Services</h3>
-<p>The game integrates the following third-party SDKs for ads and features:</p>
-
-<h4>Apple Game Center</h4>
+<h3>2. Third-Party Advertising Service</h3>
 <ul>
-<li>Provides leaderboards and achievements.</li>
-<li>Data such as nickname and scores are managed by Apple. We do not access Apple ID passwords or private information.</li>
+<li><strong>Google AdMob:</strong>
+    <ul>
+        <li><strong>Data Collection:</strong> AdMob may collect anonymous technical info, including device identifiers (IDFA, with consent), IP addresses, and ad interaction data.</li>
+        <li><strong>Purpose:</strong> Ad delivery, frequency capping, fraud prevention, and anonymous analytics.</li>
+        <li><strong>User Control:</strong> Supports iOS App Tracking Transparency (ATT). If denied, AdMob will not access IDFA for cross-app tracking.</li>
+        <li>See also <a href="https://policies.google.com/privacy" target="_blank">Google Privacy Policy</a>.</li>
+    </ul>
+</li>
 </ul>
 
-<h4>Google AdMob</h4>
+<h3>3. Game Center Data</h3>
+<p>The game uses Apple Game Center to provide leaderboards and achievements. Data such as nicknames and scores is managed by Apple. We do not have access to your Apple ID or personal information. See <a href="https://www.apple.com/legal/privacy/" target="_blank">Apple Privacy Policy</a>.</p>
+
+<h3>4. Device Permissions</h3>
 <ul>
-<li>May collect device identifiers (IDFA, with consent), IP, and ad interaction data.</li>
-<li>Used for ad delivery, frequency control, fraud prevention, and performance analytics.</li>
-<li>See Google Privacy Policy: <a href="https://policies.google.com/privacy" target="_blank">https://policies.google.com/privacy</a></li>
+<li><strong>Network Access:</strong> For loading ads and syncing Game Center scores.</li>
+<li><strong>App Tracking Transparency (ATT):</strong> To request ad tracking permission for more relevant ads.</li>
 </ul>
 
-<h4>Unity Ads</h4>
+<h3>5. Data Security and Retention</h3>
 <ul>
-<li>May collect device identifiers, IP, advertising identifiers (IDFA with consent), and interaction data.</li>
-<li>Used for ad delivery, analytics, and fraud prevention.</li>
-<li>See Unity Privacy Policy: <a href="https://unity.com/legal/privacy-policy" target="_blank">https://unity.com/legal/privacy-policy</a></li>
+<li>No cloud servers; <strong>we do not collect or store</strong> user personal data on our servers.</li>
+<li>Game data is deleted when the app is uninstalled. Third-party retention policies apply.</li>
 </ul>
 
-<h4>AppLovin</h4>
+<h3>6. Protection of Minors</h3>
 <ul>
-<li>May collect device identifiers, IP, advertising identifiers (IDFA with consent), and interaction data.</li>
-<li>Used for ad delivery, analytics, performance measurement, and fraud prevention.</li>
-<li>See AppLovin Privacy Policy: <a href="https://www.applovin.com/privacy/" target="_blank">https://www.applovin.com/privacy/</a></li>
+<li>Game suitable for all ages; no IAP or social chat.</li>
+<li>No collection of personal data from children under 13; complies with applicable child privacy regulations.</li>
 </ul>
 
-<h3>3. App Tracking Transparency (ATT)</h3>
-<p>On iOS devices, the game supports Apple's ATT framework. If you decline tracking authorization, advertising identifiers (IDFA) will not be accessed for cross-app tracking.</p>
+<h3>7. Policy Updates</h3>
+<p>This policy may be updated with new features or legal requirements and will be posted on this page. Check periodically for updates.</p>
 
-<h3>4. GDPR (European Economic Area Users)</h3>
-<p>EEA users may request access, correction, deletion of personal data, or withdraw consent.</p>
-
-<h3>5. CCPA (California Residents)</h3>
-<p>California residents may request disclosure of categories of personal information collected and request deletion. <strong>We do not sell personal data to third parties.</strong></p>
-
-<h3>6. Children’s Privacy</h3>
-<p>The game is suitable for all ages. No personal information from children under 13 is collected.</p>
-
-<h3>7. Data Security</h3>
-<p>We do not maintain cloud servers for user data. All data is stored on the device and deleted when the game is uninstalled.</p>
-
-<h3>8. Policy Updates</h3>
-<p>This Privacy Policy may be updated to reflect new features or legal requirements. Updates will be posted on this page.</p>
-
-<h3>9. Contact</h3>
-<p>Developer: Ge Hong<br>📧 Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></p>
-        `
+<h3>8. Contact</h3>
+<p>Developer: Ge Hong<br>Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></p>
+`
     }
 };
 
+// 渲染函数
 function renderPolicy(lang) {
     document.getElementById('title').textContent = policyData[lang].title;
-    document.getElementById('subtitle').textContent = policyData[lang].subtitle;
+    document.getElementById('effectiveDate').textContent = policyData[lang].effectiveDate;
     document.getElementById('policyContent').innerHTML = policyData[lang].content;
     document.getElementById('footer').textContent = policyData[lang].footer;
     langBtn.textContent = policyData[lang].btn;
@@ -249,7 +233,7 @@ renderPolicy(currentLang);
 
 // 手动切换语言
 langBtn.addEventListener('click', () => {
-    currentLang = currentLang === 'zh' ? 'en' : 'zh';
+    currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
     renderPolicy(currentLang);
 });
 </script>
