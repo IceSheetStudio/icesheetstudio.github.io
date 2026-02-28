@@ -111,7 +111,7 @@ footer {
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle">🌐 切换语言</a>
-    <a href="privacy.html" id="privacyLink" target="_blank" rel="noopener noreferrer">🛡️ 隐私政策</a>
+    <a href="privacy.html" id="privacyLink">🛡️ 隐私政策</a>
 </div>
 
 <h1 id="title"></h1>
@@ -168,7 +168,7 @@ function renderText(lang){
     downloadBtn.href = textData[lang].appStoreLink;
     langToggle.textContent = textData[lang].btnText;
     privacyLink.textContent = textData[lang].privacyText;
-    document.getElementById('footer').textContent = textData[lang].footer; // ✅ 显示版权
+    document.getElementById('footer').textContent = textData[lang].footer;
 }
 renderText(currentLang);
 
