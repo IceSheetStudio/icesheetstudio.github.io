@@ -76,7 +76,7 @@
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle"></a>
-    <a href="https://icesheetstudio.github.io" target="_blank" rel="noopener noreferrer">🏠 首页</a>
+    <a href="https://icesheetstudio.github.io" target="_blank" rel="noopener noreferrer" id="homeBtn"></a>
 </div>
 
 <h1 id="title"></h1>
@@ -88,18 +88,21 @@
 const menuBtn = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const langToggle = document.getElementById('langToggle');
+const homeBtn = document.getElementById('homeBtn');
 
 // 优先从 localStorage 获取用户选择语言，如果没有再判断浏览器语言
 let currentLang = localStorage.getItem('baiMahjongLang') || 'en';
 const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
 if(!localStorage.getItem('baiMahjongLang') && userLang.startsWith('zh')) currentLang = 'zh-CN';
 
+// 多语言文本数据
 const policyData = {
     'zh-CN': {
         title: '摆麻将 - 隐私政策',
         effectiveDate: '生效日期：2026 年 2 月 28 日',
         footer: '© 2026 葛洪 · 版权所有',
         btn: '🌐 English',
+        homeBtn: '🏠 首页',
         content: `
 <h3>1. 信息收集与使用</h3>
 <ul>
@@ -154,6 +157,7 @@ const policyData = {
         effectiveDate: 'Effective Date: February 28, 2026',
         footer: '© 2026 Ge Hong · All Rights Reserved',
         btn: '🌐 中文',
+        homeBtn: '🏠 Home',
         content: `
 <h3>1. Information Collection and Use</h3>
 <ul>
@@ -205,12 +209,14 @@ const policyData = {
     }
 };
 
+// 渲染页面内容
 function renderPolicy(lang) {
     document.getElementById('title').textContent = policyData[lang].title;
     document.getElementById('effectiveDate').textContent = policyData[lang].effectiveDate;
     document.getElementById('policyContent').innerHTML = policyData[lang].content;
     document.getElementById('footer').textContent = policyData[lang].footer;
     langToggle.textContent = policyData[lang].btn;
+    homeBtn.textContent = policyData[lang].homeBtn;
 }
 
 // 初次渲染
