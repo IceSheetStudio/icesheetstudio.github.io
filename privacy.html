@@ -1,248 +1,148 @@
 <!DOCTYPE html>
-<html lang="en">
+<html lang="zh-CN">
 <head>
 <meta charset="UTF-8" />
 <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-<title>Bai Mahjong - Privacy Policy</title>
+<title>摆麻将 - 隐私政策 / Privacy Policy</title>
 <style>
-body {
-    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
-    background-color: #2c2c2e;
-    color: #f2f2f2;
-    text-align: center;
-    padding: 60px 20px;
-    line-height: 1.7;
-    transition: all 0.3s;
-}
-h1 { font-size: 2em; margin-bottom: 0.3em; }
-.effective-date { color: #bbb; margin-bottom: 2em; font-size: 0.95em; }
-a { color: #0a84ff; text-decoration: none; }
-a:hover { text-decoration: underline; }
-.menu-btn {
-    position: fixed;
-    top: 20px;
-    right: 20px;
-    background: #0a84ff;
-    color: white;
-    border: none;
-    border-radius: 8px;
-    padding: 6px 10px;
-    cursor: pointer;
-    font-size: 1em;
-    z-index: 1000;
-    transition: background 0.3s;
-}
-.menu-btn:hover { background: #0066cc; }
-.dropdown-menu {
-    display: none;
-    position: fixed;
-    top: 50px;
-    right: 20px;
-    background: #3a3a3c;
-    border-radius: 10px;
-    overflow: hidden;
-    min-width: 160px;
-    box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-    z-index: 1000;
-}
-.dropdown-menu a {
-    display: block;
-    padding: 10px 15px;
-    text-align: left;
-    color: #f2f2f2;
-    text-decoration: none;
-    border-bottom: 1px solid #4a4a4c;
-    transition: background 0.2s;
-    font-size: 1em;
-}
-.dropdown-menu a:last-child { border-bottom: none; }
-.dropdown-menu a:hover { background: #1b9aff; }
-.policy-content {
-    background: #3a3a3c;
-    padding: 25px 30px;
-    border-radius: 12px;
-    margin: 20px auto;
-    max-width: 800px;
-    text-align: left;
-}
-.policy-content h3 { color: #f2f2f2; margin-top: 1.8em; }
-.policy-content p, .policy-content li { color: #ddd; }
-.policy-content ul { margin-left: 20px; }
-footer {
-    margin-top: 40px;
-    font-size: 0.9em;
-    color: #aaa;
-    text-align: center;
-    white-space: pre-line;
-}
-@media (max-width: 600px) { .policy-content { padding: 20px 15px; } }
+    body { font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif; background-color: #2c2c2e; color: #f2f2f2; text-align: center; padding: 60px 20px; line-height: 1.7; }
+    h1 { font-size: 1.8em; margin-bottom: 0.3em; }
+    .effective-date { color: #bbb; margin-bottom: 2em; font-size: 0.9em; }
+    a { color: #0a84ff; text-decoration: none; }
+    a:hover { text-decoration: underline; }
+    .menu-btn { position: fixed; top: 20px; right: 20px; background: #0a84ff; color: white; border: none; border-radius: 8px; padding: 8px 12px; cursor: pointer; z-index: 1000; }
+    .dropdown-menu { display: none; position: fixed; top: 60px; right: 20px; background: #3a3a3c; border-radius: 10px; min-width: 140px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; }
+    .dropdown-menu a { display: block; padding: 12px 15px; color: #f2f2f2; border-bottom: 1px solid #4a4a4c; }
+    .dropdown-menu a:last-child { border-bottom: none; }
+    .policy-content { background: #3a3a3c; padding: 25px 30px; border-radius: 12px; margin: 20px auto; max-width: 800px; text-align: left; }
+    .policy-content h3 { color: #fff; margin-top: 1.5em; padding-left: 0; }
+    .policy-content ul { padding-left: 20px; }
+    .policy-content li { margin-bottom: 8px; color: #ddd; }
+    footer { margin-top: 40px; font-size: 0.85em; color: #888; white-space: pre-line; }
+    @media (max-width: 600px) { .policy-content { padding: 20px; } }
 </style>
 </head>
 <body>
-
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
-    <a href="#" id="langToggle"></a>
-    <a href="index.html" id="homeBtn"></a>
+    <a href="#" id="langToggle">🌐 English</a>
+    <a href="index.html" id="homeBtn">🏠 首页</a>
 </div>
-
 <h1 id="title"></h1>
 <div class="effective-date" id="effectiveDate"></div>
 <div class="policy-content" id="policyContent"></div>
 <footer id="footer"></footer>
-
 <script>
-const menuBtn = document.getElementById('menuBtn');
-const dropdownMenu = document.getElementById('dropdownMenu');
-const langToggle = document.getElementById('langToggle');
-const homeBtn = document.getElementById('homeBtn');
-
-let currentLang = localStorage.getItem('baiMahjongLang') || 'en';
-if(!localStorage.getItem('baiMahjongLang')){
-    const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-    if(userLang.startsWith('zh')) currentLang='zh-CN';
-}
-
 const policyData = {
-'zh-CN': {
-title:'摆麻将 - 隐私政策',
-effectiveDate:'生效日期：2026 年 2 月 28 日',
-footer:`© 2026 Ge Hong / IceSheet Studio
-版权所有`,
-btn:'🌐 English',
-homeBtn:'🏠 首页',
-content:`
-<h3>1. 信息收集与使用</h3>
-<ul>
-<li>不收集个人身份信息：不会收集姓名、邮箱、手机号或地理位置。</li>
-<li>本地数据存储：游戏进度和设置仅存储在设备中。</li>
-</ul>
-
-<h3>2. 第三方广告服务 (Google AdMob)</h3>
-<ul>
-<li>本游戏使用 Google AdMob 广告服务，并可能通过其中介功能加载第三方广告（如 Unity Ads 等）。</li>
-<li>用户控制：支持 iOS ATT，拒绝授权后 AdMob 不会访问 IDFA 进行跨应用追踪。</li>
-<li>详细请参阅 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google 隐私政策</a>。</li>
-</ul>
-
-<h3>3. Game Center 数据</h3>
-<ul>
-<li>游戏通过 Apple Game Center 提供排行榜和成就，数据由 Apple 管理，我们无法访问 Apple ID 或个人信息。详情请参阅 <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Apple 隐私政策</a>。</li>
-</ul>
-
-<h3>4. 设备权限说明</h3>
-<ul>
-<li>网络访问：加载广告和同步排行榜。</li>
-<li>ATT：请求广告追踪授权，展示相关广告。</li>
-</ul>
-
-<h3>5. 数据安全与保留</h3>
-<ul>
-<li>不设服务器，不收集用户数据。</li>
-<li>游戏记录随 App 卸载删除，第三方服务遵循官方隐私政策。</li>
-</ul>
-
-<h3>6. 未成年人保护</h3>
-<ul>
-<li>游戏适合所有年龄，无 IAP 和社交功能。</li>
-<li>不收集 13 岁以下儿童信息。</li>
-</ul>
-
-<h3>7. 政策更新</h3>
-<ul>
-<li>未来更新将发布于本页面，请定期查看。</li>
-</ul>
-
-<h3>8. 联系我们</h3>
-<ul>
-<li>开发者：葛洪</li>
-<li>邮箱：<a href="mailto:gehong01@gmail.com" rel="noopener noreferrer">gehong01@gmail.com</a></li>
-</ul>
-`
-},
-'en': {
-title:'Bai Mahjong - Privacy Policy',
-effectiveDate:'Effective Date: February 28, 2026',
-footer:`© 2026 Ge Hong / IceSheet Studio
-All Rights Reserved`,
-btn:'🌐 中文',
-homeBtn:'🏠 Home',
-content:`
-<h3>1. Information Collection and Use</h3>
-<ul>
-<li>No Collection of PII: We do not collect name, email, phone, or location.</li>
-<li>Local Data Storage: Game progress and settings stored locally only.</li>
-</ul>
-
-<h3>2. Third-Party Advertising Service (Google AdMob)</h3>
-<ul>
-<li>The game uses Google AdMob and may load ads from third-party networks (such as Unity Ads) via AdMob Mediation.</li>
-<li>User Control: Supports iOS ATT. Denying authorization prevents AdMob from accessing IDFA for cross-app tracking.</li>
-<li>See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener noreferrer">Google Privacy Policy</a>.</li>
-</ul>
-
-<h3>3. Game Center Data</h3>
-<ul>
-<li>Apple Game Center provides leaderboards/achievements. Data managed by Apple; we cannot access Apple ID. See <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener noreferrer">Apple Privacy Policy</a>.</li>
-</ul>
-
-<h3>4. Device Permissions</h3>
-<ul>
-<li>Network: Load ads & sync leaderboards.</li>
-<li>ATT: Request ad tracking authorization for relevant ads.</li>
-</ul>
-
-<h3>5. Data Security and Retention</h3>
-<ul>
-<li>No servers; we do not collect user data.</li>
-<li>Game data deleted on uninstall; third-party retention per official policy.</li>
-</ul>
-
-<h3>6. Protection of Minors</h3>
-<ul>
-<li>Suitable for all ages; no IAP or social features.</li>
-<li>No data collection for children under 13.</li>
-</ul>
-
-<h3>7. Policy Updates</h3>
-<ul>
-<li>Updates will be posted on this page; check periodically.</li>
-</ul>
-
-<h3>8. Contact</h3>
-<ul>
-<li>Developer: Ge Hong</li>
-<li>Email: <a href="mailto:gehong01@gmail.com" rel="noopener noreferrer">gehong01@gmail.com</a></li>
-</ul>
-`
-}
-};
-
-function renderPolicy(lang){
-    document.getElementById('title').textContent = policyData[lang].title;
-    document.getElementById('effectiveDate').textContent = policyData[lang].effectiveDate;
-    document.getElementById('policyContent').innerHTML = policyData[lang].content;
-    document.getElementById('footer').textContent = policyData[lang].footer;
-    langToggle.textContent = policyData[lang].btn;
-    homeBtn.textContent = policyData[lang].homeBtn;
-}
-renderPolicy(currentLang);
-
-menuBtn.addEventListener('click',()=>{dropdownMenu.style.display = dropdownMenu.style.display==='block'?'none':'block';});
-
-langToggle.addEventListener('click',e=>{
-    e.preventDefault();
-    currentLang = currentLang==='zh-CN'?'en':'zh-CN';
-    localStorage.setItem('baiMahjongLang',currentLang);
-    renderPolicy(currentLang);
-    dropdownMenu.style.display='none';
-});
-
-document.addEventListener('click',e=>{
-    if(!menuBtn.contains(e.target)&&!dropdownMenu.contains(e.target)){
-        dropdownMenu.style.display='none';
+    'zh-CN': {
+        title: '摆麻将 - 隐私政策',
+        effectiveDate: '生效日期：2026 年 2 月 28 日',
+        btn: '🌐 English',
+        homeBtn: '🏠 首页',
+        footer: '© 2026 Ge Hong / IceSheet Studio\n版权所有',
+        content: `
+            <h3>1. 信息收集与使用</h3>
+            <ul>
+                <li>不收集个人身份信息：我们不会主动收集、存储或上传您的姓名、电子邮件、电话号码或地理位置等个人可识别信息（PII）。</li>
+                <li>本地数据存储：您的游戏进度和本地设置仅存储在您的设备中。</li>
+            </ul>
+            <h3>2. 第三方广告服务 (Google AdMob)</h3>
+            <ul>
+                <li>本游戏使用 Google AdMob 广告服务，并可能通过其中介功能加载第三方广告（如 Unity Ads 等）。</li>
+                <li>用户控制：支持 iOS 的“要求 App 不跟踪”（App Tracking Transparency）。拒绝授权后，AdMob 不会访问您的 IDFA 进行跨应用追踪。</li>
+                <li>详细请参阅 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 隐私政策</a>。</li>
+            </ul>
+            <h3>3. Game Center 数据</h3>
+            <ul>
+                <li>本游戏通过 Apple Game Center 提供排行榜和成就系统。相关数据（如游戏昵称和分数）由 Apple 管理，我们无法访问您的 Apple ID 或个人信息。详情请参阅 <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple 隐私政策</a>。</li>
+            </ul>
+            <h3>4. 设备权限说明</h3>
+            <ul>
+                <li>网络访问权限：用于加载广告内容以及同步 Game Center 排行榜积分。</li>
+                <li>App 追踪透明度 (ATT)：用于请求广告追踪授权，以展示更相关的广告。</li>
+            </ul>
+            <h3>5. 数据安全与保留</h3>
+            <ul>
+                <li>不设立云端服务器，因此不收集也不存储用户个人数据在服务器上。</li>
+                <li>游戏记录随 App 卸载即物理删除。第三方服务的数据保留请参照官方隐私协议。</li>
+            </ul>
+            <h3>6. 未成年人保护</h3>
+            <ul>
+                <li>游戏适合所有年龄，不包含 IAP 或社交聊天功能。</li>
+                <li>不鼓励或引导未成年人提供个人信息，遵守儿童隐私保护法规（13 岁以下儿童特别保护）。</li>
+            </ul>
+            <h3>7. 政策更新</h3>
+            <ul>
+                <li>若未来版本引入新的功能或服务，我们将更新本政策并在本页面发布，建议您定期查看。</li>
+            </ul>
+            <h3>8. 联系我们</h3>
+            <ul>
+                <li>开发者：葛洪</li>
+                <li>邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li>
+            </ul>`
+    },
+    'en': {
+        title: 'Bai Mahjong - Privacy Policy',
+        effectiveDate: 'Effective Date: February 28, 2026',
+        btn: '🌐 中文',
+        homeBtn: '🏠 Home',
+        footer: '© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved',
+        content: `
+            <h3>1. Information Collection and Use</h3>
+            <ul>
+                <li>No Collection of PII: We do not collect, store, or upload your name, email, phone number, or location data.</li>
+                <li>Local Data Storage: Your game progress and settings are stored locally on your device only.</li>
+            </ul>
+            <h3>2. Third-Party Advertising (Google AdMob)</h3>
+            <ul>
+                <li>The game uses Google AdMob and may load ads from third-party networks (such as Unity Ads) via AdMob Mediation.</li>
+                <li>User Control: Supports iOS App Tracking Transparency (ATT). If denied, AdMob will not access IDFA for tracking.</li>
+                <li>See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</li>
+            </ul>
+            <h3>3. Game Center Data</h3>
+            <ul>
+                <li>Leaderboards and achievements are managed by Apple Game Center. We cannot access your Apple ID. See <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a>.</li>
+            </ul>
+            <h3>4. Device Permissions</h3>
+            <ul>
+                <li>Network Access: Used for loading ads and syncing leaderboards.</li>
+                <li>App Tracking Transparency: Used to request authorization for relevant ads.</li>
+            </ul>
+            <h3>5. Data Security</h3>
+            <ul>
+                <li>No cloud servers are used; no user data is stored remotely.</li>
+                <li>Game data is deleted when the App is uninstalled.</li>
+            </ul>
+            <h3>6. Protection of Minors</h3>
+            <ul>
+                <li>Suitable for all ages; no IAP or social features.</li>
+                <li>We comply with child privacy regulations (under 13).</li>
+            </ul>
+            <h3>7. Policy Updates</h3>
+            <ul>
+                <li>Future updates will be posted here. Please check periodically.</li>
+            </ul>
+            <h3>8. Contact</h3>
+            <ul>
+                <li>Developer: Ge Hong</li>
+                <li>Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li>
+            </ul>`
     }
-});
+};
+let currentLang = localStorage.getItem('baiMahjongLang') || ((navigator.language || '').startsWith('zh') ? 'zh-CN' : 'en');
+function render(lang) {
+    const data = policyData[lang];
+    document.getElementById('title').textContent = data.title;
+    document.getElementById('effectiveDate').textContent = data.effectiveDate;
+    document.getElementById('policyContent').innerHTML = data.content;
+    document.getElementById('footer').textContent = data.footer;
+    document.getElementById('langToggle').textContent = data.btn;
+    document.getElementById('homeBtn').textContent = data.homeBtn;
+}
+document.getElementById('menuBtn').onclick = (e) => { e.stopPropagation(); const menu = document.getElementById('dropdownMenu'); menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; };
+document.getElementById('langToggle').onclick = (e) => { e.preventDefault(); currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN'; localStorage.setItem('baiMahjongLang', currentLang); render(currentLang); document.getElementById('dropdownMenu').style.display = 'none'; };
+window.onclick = () => document.getElementById('dropdownMenu').style.display = 'none';
+render(currentLang);
 </script>
 </body>
 </html>
