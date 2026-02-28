@@ -89,10 +89,10 @@ const menuBtn = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const langToggle = document.getElementById('langToggle');
 
-// 默认英文，如果浏览器语言是中文（简体或繁体）就显示中文
-let currentLang = 'en';
+// 优先从 localStorage 获取用户选择语言，如果没有再判断浏览器语言
+let currentLang = localStorage.getItem('baiMahjongLang') || 'en';
 const userLang = (navigator.language || navigator.userLanguage || '').toLowerCase();
-if(userLang.startsWith('zh')) currentLang = 'zh-CN';
+if(!localStorage.getItem('baiMahjongLang') && userLang.startsWith('zh')) currentLang = 'zh-CN';
 
 const policyData = {
     'zh-CN': {
@@ -213,19 +213,24 @@ function renderPolicy(lang) {
     langToggle.textContent = policyData[lang].btn;
 }
 
+// 初次渲染
 renderPolicy(currentLang);
 
+// 菜单开关
 menuBtn.addEventListener('click', () => {
     dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
 });
 
+// 语言切换
 langToggle.addEventListener('click', (e) => {
     e.preventDefault();
     currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN';
+    localStorage.setItem('baiMahjongLang', currentLang); // 保存选择
     renderPolicy(currentLang);
     dropdownMenu.style.display = 'none';
 });
 
+// 点击页面其他地方关闭菜单
 document.addEventListener('click', (e) => {
     if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
         dropdownMenu.style.display = 'none';
