@@ -113,7 +113,6 @@ kidoz.net, 14260, RESELLER, a109366414b7335e
 kidoz.net, 15467, RESELLER, a109366414b7335e
 krushmedia.com, ajxf6R585a9m6Catvk, RESELLER
 lacunads.com, lcb555b3bc8667a09a, RESELLER
-lacunads.com, LCb555b3bc8667a09a, RESELLER
 lijit.com, 273050, RESELLER, fafdf38b16bf6b2b
 lijit.com, 417620, RESELLER, fafdf38b16bf6b2b
 lijit.com, 465542, RESELLER, fafdf38b16bf6b2b
@@ -145,6 +144,7 @@ media.net, 8CU355VS4, RESELLER
 media.net, 8CU5L226O, RESELLER
 media.net, 8CU813E2H, RESELLER
 media.net, 8CU9B72O6, RESELLER
+media.net, 8CUH46N56, RESELLER
 onairglobal.com, 4357629, RESELLER
 onetag.com, 5d1628750185ace, RESELLER
 onetag.com, 8668c16092f01e8, RESELLER
@@ -177,6 +177,7 @@ playwire.com, 1018531, RESELLER
 playwire.com, 1025119, RESELLER
 pokkt.com, 6246, RESELLER, c45702d9311e25fd
 prado.co, 14260, RESELLER
+programmaticx.ai, 84448, RESELLER, b42d42eb28400efa
 pubmatic.com, 137711, RESELLER, 5d62403b186f2ace
 pubmatic.com, 156177, RESELLER, 5d62403b186f2ace
 pubmatic.com, 156520, RESELLER, 5d62403b186f2ace
@@ -310,6 +311,7 @@ start.io, 116712987, RESELLER
 start.io, 150505487, RESELLER
 start.io, 168507669, RESELLER
 start.io, 197760873, RESELLER
+targetbetter.com, 82228, RESELLER
 taurusx.com, 70079, RESELLER
 taurusx.com, 80029, RESELLER
 taurusx.com, 80635, RESELLER
@@ -333,10 +335,10 @@ triplelift.com, 13042, RESELLER
 triplelift.com, 13883, RESELLER, 6c33edb13117fd86
 triplelift.com, 14127, RESELLER, 6c33edb13117fd86
 triplelift.com, 14594, RESELLER, 6c33edb13117fd86
+triplelift.com, 14716, RESELLER, 6c33edb13117fd86
 ucfunnel.com, par-BE7E667E3339AD6BC7BA2887D6E7227A, RESELLER
 undertone.com, 4108, RESELLER
 ushareit.com, lcb555b3bc8667a09a, RESELLER
-ushareit.com, LCb555b3bc8667a09a, RESELLER
 verve.com, 15503, RESELLER, 0c8f5958fc2d627
 vidazoo.com, 66e04f5e4d7fd89d878d29d2, RESELLER, b6ada874b4d7d0b2
 video.unrulymedia.com, 1058378980, RESELLER
@@ -381,8 +383,3 @@ zmaticoo.com, 5135004, RESELLER
 zmaticoo.com, 5135063, RESELLER
 zmaticoo.com, 5135195, RESELLER
 zmaticoo.com, 5135704, RESELLER
-media.net, 8cu12aq1y, RESELLER
-media.net, 8cu132ud6, RESELLER
-media.net, 8cu355vs4, RESELLER
-media.net, 8cu5l226o, RESELLER
-media.net, 8cu9b72o6, RESELLER
