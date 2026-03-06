@@ -97,6 +97,6 @@ document.getElementById('menuBtn').onclick = (e) => { e.stopPropagation(); const
 document.getElementById('langToggle').onclick = (e) => { e.preventDefault(); currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN'; localStorage.setItem('baiMahjongLang', currentLang); render(currentLang); document.getElementById('dropdownMenu').style.display = 'none'; };
 window.onclick = () => document.getElementById('dropdownMenu').style.display = 'none';
 render(currentLang);
-</script>
+</script> 
 </body>
 </html>
