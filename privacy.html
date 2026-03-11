@@ -11,6 +11,7 @@
     a { color: #0a84ff; text-decoration: none; }
     a:hover { text-decoration: underline; }
 
+    /* 按钮：完全对齐主页数值 */
     .menu-btn {
         position: fixed;
         top: 20px;
@@ -21,13 +22,14 @@
         border-radius: 8px;
         padding: 6px 10px;
         cursor: pointer;
-        font-size: 16px;
+        font-size: 16px; /* 强制 16px 确保单位一致 */
         z-index: 1000;
         transition: background 0.3s;
         line-height: 1.2;
     }
     .menu-btn:hover { background: #0066cc; }
 
+    /* 下拉菜单：top 改为 50px 与主页一致 */
     .dropdown-menu { 
         display: none; 
         position: fixed; 
@@ -35,7 +37,7 @@
         right: 20px; 
         background: #3a3a3c; 
         border-radius: 10px; 
-        min-width: 160px; 
+        min-width: 160px; /* 对齐主页宽度 */
         box-shadow: 0 4px 12px rgba(0,0,0,0.3); 
         z-index: 1000; 
         overflow: hidden;
@@ -62,7 +64,6 @@
 <div class="effective-date" id="effectiveDate"></div>
 <div class="policy-content" id="policyContent"></div>
 <footer id="footer"></footer>
-
 <script>
 const policyData = {
     'zh-CN': {
@@ -71,7 +72,7 @@ const policyData = {
         btn: '🌐 English',
         homeBtn: '🏠 首页',
         footer: '© 2026 Ge Hong / IceSheet Studio\n版权所有',
-        content: `<h3>1. 信息收集与使用</h3><ul><li>不收集个人身份信息：我们不会主动收集、存储或上传您的姓名、电子邮件、电话号码或地理位置等个人可识别信息（PII）。</li><li>本地数据存储：您的游戏进度和本地设置仅存储在您的设备中。</li></ul><h3>2. 第三方广告服务 (Google AdMob)</h3><ul><li>本游戏使用 Google AdMob 广告服务。</li><li>用户控制：支持 iOS 的“要求 App 不跟踪”（ATT）。<b>若您选择“要求 App 不跟踪”，本 App 及其关联网页将不会访问您的 IDFA 或通过 Cookie 进行跨应用追踪。</b></li><li>详细请参阅 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 隐私政策</a>。</li></ul><h3>3. 数据安全</h3><ul><li>无服务器存储：本 App 不设立云端服务器，不收集任何用户数据。网页端不使用任何 Cookie 或本地存储技术。</li></ul><h3>4. 联系我们</h3><ul><li>开发者：葛洪 | 邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li></ul>`
+        content: `<h3>1. 信息收集与使用</h3><ul><li>不收集个人身份信息：我们不会主动收集、存储或上传您的姓名、电子邮件、电话号码或地理位置等个人可识别信息（PII）。</li><li>本地数据存储：您的游戏进度和本地设置仅存储在您的设备中。</li></ul><h3>2. 第三方广告服务 (Google AdMob)</h3><ul><li>本游戏使用 Google AdMob 广告服务，并可能通过其中介功能加载第三方广告（如 Unity Ads 等）。</li><li>用户控制：支持 iOS 的“要求 App 不跟踪”（App Tracking Transparency）。拒绝授权后，AdMob 不会访问您的 IDFA 进行跨应用追踪。</li><li>详细请参阅 <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google 隐私政策</a>。</li></ul><h3>3. Game Center 数据</h3><ul><li>本游戏通过 Apple Game Center 提供排行榜和成就系统。相关数据（如游戏昵称和分数）由 Apple 管理，我们无法访问您的 Apple ID 或个人信息。详情请参阅 <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple 隐私政策</a>。</li></ul><h3>4. 设备权限说明</h3><ul><li>网络访问权限：用于加载广告内容以及同步 Game Center 排行榜积分。</li><li>App 追踪透明度 (ATT)：用于请求广告追踪授权，以展示更相关的广告。</li></ul><h3>5. 数据安全与保留</h3><ul><li>不设立云端服务器，因此不收集也不存储用户个人数据在服务器上。</li><li>游戏记录随 App 卸载即物理删除。第三方服务的数据保留请参照官方隐私协议。</li></ul><h3>6. 未成年人保护</h3><ul><li>游戏适合所有年龄，不包含 IAP 或社交聊天功能。</li><li>不鼓励或引导未成年人提供个人信息，遵守儿童隐私保护法规（13 岁以下儿童特别保护）。</li></ul><h3>7. 政策更新</h3><ul><li>若未来版本引入新的功能或服务，我们将更新本政策并在本页面发布，建议您定期查看。</li></ul><h3>8. 联系我们</h3><ul><li>开发者：葛洪</li><li>邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li></ul>`
     },
     'en': {
         title: 'Bai Mahjong - Privacy Policy',
@@ -79,12 +80,12 @@ const policyData = {
         btn: '🌐 中文',
         homeBtn: '🏠 Home',
         footer: '© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved',
-        content: `<h3>1. Information Collection and Use</h3><ul><li>No Collection of PII: We do not collect or upload your name, email, or location.</li><li>Local Storage: Your game progress is stored on your device only.</li></ul><h3>2. Third-Party Advertising (Google AdMob)</h3><ul><li>The game uses Google AdMob for advertising.</li><li>User Control: Supports iOS ATT. <b>If "Ask App Not to Track" is selected, this app and its web content will NOT access IDFA or use Cookies for cross-app tracking.</b></li><li>See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</li></ul><h3>3. Data Security</h3><ul><li>No persistent data (Cookies/LocalStorage) is used on this website. All app data is deleted upon uninstallation.</li></ul><h3>4. Contact</h3><ul><li>Developer: Ge Hong | Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li></ul>`
+        content: `<h3>1. Information Collection and Use</h3><ul><li>No Collection of PII: We do not collect, store, or upload your name, email, phone number, or location data.</li><li>Local Data Storage: Your game progress and settings are stored locally on your device only.</li></ul><h3>2. Third-Party Advertising (Google AdMob)</h3><ul><li>The game uses Google AdMob and may load ads from third-party networks (such as Unity Ads) via AdMob Mediation.</li><li>User Control: Supports iOS App Tracking Transparency (ATT). If denied, AdMob will not access IDFA for tracking.</li><li>See <a href="https://policies.google.com/privacy" target="_blank" rel="noopener">Google Privacy Policy</a>.</li></ul><h3>3. Game Center Data</h3><ul><li>Leaderboards and achievements are managed by Apple Game Center. We cannot access your Apple ID. See <a href="https://www.apple.com/legal/privacy/" target="_blank" rel="noopener">Apple Privacy Policy</a>.</li></ul><h3>4. Device Permissions</h3><ul><li>Network Access: Used for loading ads and syncing leaderboards.</li><li>App Tracking Transparency: Used to request authorization for relevant ads.</li></ul><h3>5. Data Security</h3><ul><li>No cloud servers are used; no user data is stored remotely.</li><li>Game data is deleted when the App is uninstalled.</li></ul><h3>6. Protection of Minors</h3><ul><li>Suitable for all ages; no IAP or social features.</li><li>We comply with child privacy regulations (under 13).</li></ul><h3>7. Policy Updates</h3><ul><li>Future updates will be posted here. Please check periodically.</li></ul><h3>8. Contact</h3><ul><li>Developer: Ge Hong</li><li>Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></li></ul>`
     }
 };
 
-// 核心改动：完全移除 localStorage，仅通过内存判断语言
-let currentLang = ((navigator.language || '').startsWith('zh')) ? 'zh-CN' : 'en';
+// 仅根据浏览器环境识别语言，不再从 localStorage 读取
+let currentLang = ((navigator.language || '').startsWith('zh') ? 'zh-CN' : 'en');
 
 function render(lang) {
     const data = policyData[lang];
@@ -99,18 +100,18 @@ function render(lang) {
 document.getElementById('menuBtn').onclick = (e) => { 
     e.stopPropagation(); 
     const menu = document.getElementById('dropdownMenu'); 
-    menu.style.display = (menu.style.display === 'block') ? 'none' : 'block'; 
+    menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; 
 };
 
+// 切换语言仅在当前页面有效，不再向 localStorage 写入数据
 document.getElementById('langToggle').onclick = (e) => { 
     e.preventDefault(); 
-    currentLang = (currentLang === 'zh-CN') ? 'en' : 'zh-CN'; 
-    render(currentLang); // 仅当前渲染，不保存
+    currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN'; 
+    render(currentLang); 
     document.getElementById('dropdownMenu').style.display = 'none'; 
 };
 
 window.onclick = () => document.getElementById('dropdownMenu').style.display = 'none';
-
 render(currentLang);
 </script> 
 </body>
