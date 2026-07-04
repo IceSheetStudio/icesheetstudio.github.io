@@ -84,7 +84,11 @@ const policyData = {
     }
 };
 
-let currentLang = ((navigator.language || '').startsWith('zh') ? 'zh-CN' : 'en');
+const urlParams = new URLSearchParams(window.location.search);
+const langParam = urlParams.get('lang');
+let currentLang = (langParam === 'zh-CN' || langParam === 'en')
+    ? langParam
+    : ((navigator.language || '').startsWith('zh') ? 'zh-CN' : 'en');
 
 function render(lang) {
     const data = policyData[lang];
@@ -94,6 +98,7 @@ function render(lang) {
     document.getElementById('footer').textContent = data.footer;
     document.getElementById('langToggle').textContent = data.btn;
     document.getElementById('homeBtn').textContent = data.homeBtn;
+    document.getElementById('homeBtn').href = 'index.html?lang=' + lang;
 }
 
 document.getElementById('menuBtn').onclick = (e) => { 
@@ -106,6 +111,8 @@ document.getElementById('langToggle').onclick = (e) => {
     e.preventDefault(); 
     currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN'; 
     render(currentLang); 
+    const newUrl = window.location.pathname + '?lang=' + currentLang;
+    window.history.replaceState({}, '', newUrl);
     document.getElementById('dropdownMenu').style.display = 'none'; 
 };
 
