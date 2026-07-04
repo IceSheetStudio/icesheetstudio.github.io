@@ -13,8 +13,25 @@ footer { margin-top: 40px; font-size: 0.9em; color: #aaa; white-space: pre-line;
 .game-desc { background: #3a3a3c; padding: 15px 20px; border-radius: 12px; margin: 20px auto; max-width: 700px; line-height: 1.4; text-align: left; }
 .game-desc p { margin: 0.5em 0; text-indent: 2em; }
 .game-desc p:first-child { text-indent: 0; }
-.download-btn { display: inline-block; background: #0a84ff; color: white; border: none; border-radius: 8px; padding: 10px 20px; font-size: 1em; margin: 20px 0; cursor: pointer; transition: background 0.3s; text-decoration: none; }
-.download-btn:hover { background: #1b9aff; }
+
+.download-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 28px 0; }
+
+.download-btn { display: inline-flex; align-items: center; justify-content: center; width: 160px; color: white; border: none; border-radius: 10px; padding: 13px 0; font-size: 1.05em; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: background 0.3s, transform 0.15s; text-decoration: none; }
+.download-btn:hover { transform: translateY(-2px); text-decoration: none; }
+.download-btn.ios { background: #0a84ff; }
+.download-btn.ios:hover { background: #1b9aff; }
+.download-btn.android { background: #34a853; }
+.download-btn.android:hover { background: #2c9247; }
+
+.download-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.download-btn.disabled { background: #5a5a5c; cursor: not-allowed; pointer-events: none; opacity: 0.7; }
+.download-btn.disabled:hover { transform: none; }
+.coming-soon { font-size: 0.78em; color: #999; }
+
+@media (max-width: 420px) {
+    .download-item { width: 45%; }
+    .download-btn { width: 100%; padding: 13px 0; }
+}
 
 /* 菜单按钮：完全对齐隐私页数值 */
 .menu-btn {
@@ -47,11 +64,19 @@ footer { margin-top: 40px; font-size: 0.9em; color: #aaa; white-space: pre-line;
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle">🌐 切换语言</a>
-    <a href="privacy.html" id="privacyLink">🛡️ 隐私政策</a>
+    <a href="privacy.html?lang=zh-CN" id="privacyLink">🛡️ 隐私政策</a>
 </div>
 <h1 id="title"></h1>
 <div class="game-desc" id="gameDesc"></div>
-<a class="download-btn" id="downloadBtn" target="_blank" rel="noopener noreferrer"></a>
+<div class="download-row">
+    <div class="download-item">
+        <a class="download-btn ios" id="iosBtn" target="_blank" rel="noopener noreferrer">iOS</a>
+    </div>
+    <div class="download-item">
+        <a class="download-btn android disabled" id="androidBtn" href="javascript:void(0)">Android</a>
+        <span class="coming-soon" id="comingSoon">敬请期待</span>
+    </div>
+</div>
 <div class="dev-email" id="devEmail"></div>
 <footer id="footer"></footer>
 <script>
@@ -59,35 +84,42 @@ const menuBtn = document.getElementById('menuBtn');
 const dropdownMenu = document.getElementById('dropdownMenu');
 const langToggle = document.getElementById('langToggle');
 const privacyLink = document.getElementById('privacyLink');
-const downloadBtn = document.getElementById('downloadBtn');
+const iosBtn = document.getElementById('iosBtn');
+const androidBtn = document.getElementById('androidBtn');
 
-// 初始语言判断：仅内存操作，不读取 localStorage
-let currentLang = 'en';
-const userLang = (navigator.language || '').toLowerCase();
-if(userLang.startsWith('zh')) {
-    currentLang = 'zh-CN';
-}
+// 优先读取 URL 中的 lang 参数，其次才判断浏览器语言
+const urlParams = new URLSearchParams(window.location.search);
+const langParam = urlParams.get('lang');
+let currentLang = (langParam === 'zh-CN' || langParam === 'en')
+    ? langParam
+    : ((navigator.language || '').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en');
 
 const textData = {
     'zh-CN': {
         title: '摆麻将',
-        downloadText: '在 App Store 打开',
+        iosText: 'iOS下载',
+        androidText: '安卓下载',
         devEmail: `<span>开发者：葛洪</span><span>📧 联系邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></span>`,
         gameDesc: `<p>游戏背景：</p><p>这款游戏由独立开发者葛洪制作，灵感来源于作者奶奶每天都要玩的单人麻将游戏，老人家称之为“摆麻将”。</p><p>作者致力于复刻这款经典麻将游戏，将其搬进数字世界。如果它能带给您快乐，欢迎分享给您的家人和朋友，让更多人一起享受《摆麻将》的乐趣。</p>`,
         footer: `© 2026 Ge Hong / IceSheet Studio\n版权所有`,
         btnText: '🌐 English',
         privacyText: '🛡️ 隐私政策',
-        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746"
+        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
+        playStoreLink: "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME",
+        comingSoon: "敬请期待"
     },
     'en': {
         title: 'Bai Mahjong',
-        downloadText: 'Open in App Store',
+        iosText: 'iOS Download',
+        androidText: 'Android Download',
         devEmail: `<span>Developer: Ge Hong</span><span>📧 Contact Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></span>`,
         gameDesc: `<p>Game Background：</p><p>This game was independently developed by Ge Hong, inspired by the single-player Mahjong game that his grandmother played daily, called "Bai Mahjong."</p><p>The developer strives to faithfully recreate this classic Mahjong experience. If you enjoy it, feel free to share it with your family and friends so that more people can play Bai Mahjong.</p>`,
         footer: `© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved`,
         btnText: '🌐 中文',
         privacyText: '🛡️ Privacy Policy',
-        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746"
+        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
+        playStoreLink: "https://play.google.com/store/apps/details?id=YOUR_PACKAGE_NAME",
+        comingSoon: "Coming Soon"
     }
 };
 
@@ -95,10 +127,11 @@ function renderText(lang){
     document.getElementById('title').innerHTML = textData[lang].title;
     document.getElementById('gameDesc').innerHTML = textData[lang].gameDesc;
     document.getElementById('devEmail').innerHTML = textData[lang].devEmail;
-    downloadBtn.textContent = textData[lang].downloadText;
-    downloadBtn.href = textData[lang].appStoreLink;
+    iosBtn.href = textData[lang].appStoreLink;
+    document.getElementById('comingSoon').textContent = textData[lang].comingSoon;
     langToggle.textContent = textData[lang].btnText;
     privacyLink.textContent = textData[lang].privacyText;
+    privacyLink.href = 'privacy.html?lang=' + lang;
     document.getElementById('footer').textContent = textData[lang].footer;
 }
 
@@ -111,8 +144,9 @@ menuBtn.addEventListener('click', ()=> {
 langToggle.addEventListener('click', e=>{ 
     e.preventDefault(); 
     currentLang = currentLang==='zh-CN'?'en':'zh-CN'; 
-    // 已彻底移除 localStorage.setItem 逻辑
     renderText(currentLang); 
+    const newUrl = window.location.pathname + '?lang=' + currentLang;
+    window.history.replaceState({}, '', newUrl);
     dropdownMenu.style.display='none'; 
 });
 
