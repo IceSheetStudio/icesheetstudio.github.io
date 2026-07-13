@@ -10,95 +10,146 @@ h1 { font-size: 2em; margin-bottom: 0.2em; }
 a { color: #0a84ff; text-decoration: none; display: inline-block; }
 a:hover { text-decoration: underline; }
 footer { margin-top: 40px; font-size: 0.9em; color: #aaa; white-space: pre-line; }
-.game-desc { background: #3a3a3c; padding: 15px 20px; border-radius: 12px; margin: 20px auto; max-width: 700px; line-height: 1.6; text-align: left; }
-.game-desc p { margin: 1em 0; text-indent: 0; }
+.game-desc { background: #3a3a3c; padding: 15px 20px; border-radius: 12px; margin: 20px auto; max-width: 700px; line-height: 1.4; text-align: left; }
+.game-desc p { margin: 0.5em 0; text-indent: 2em; }
+.game-desc p:first-child { text-indent: 0; }
+
 .download-row { display: flex; justify-content: center; gap: 20px; flex-wrap: wrap; margin: 28px 0; }
+
 .download-btn { display: inline-flex; align-items: center; justify-content: center; width: 160px; color: white; border: none; border-radius: 10px; padding: 13px 0; font-size: 1.05em; font-weight: 600; letter-spacing: 0.5px; cursor: pointer; transition: background 0.3s, transform 0.15s; text-decoration: none; }
 .download-btn:hover { transform: translateY(-2px); text-decoration: none; }
 .download-btn.ios { background: #0a84ff; }
-.download-btn.android { background: #5a5a5c; cursor: not-allowed; opacity: 0.7; }
+.download-btn.ios:hover { background: #1b9aff; }
+.download-btn.android { background: #34a853; }
+.download-btn.android:hover { background: #2c9247; }
+
 .download-item { display: flex; flex-direction: column; align-items: center; gap: 6px; }
+.download-btn.disabled { background: #5a5a5c; cursor: not-allowed; pointer-events: none; opacity: 0.7; }
+.download-btn.disabled:hover { transform: none; }
 .coming-soon { font-size: 0.78em; color: #999; }
-.menu-btn { position: fixed; top: 20px; right: 20px; background: #0a84ff; color: white; border: none; border-radius: 8px; padding: 6px 10px; cursor: pointer; font-size: 16px; z-index: 1000; }
+
+@media (max-width: 420px) {
+    .download-item { width: 45%; }
+    .download-btn { width: 100%; padding: 13px 0; }
+}
+
+.menu-btn {
+    position: fixed;
+    top: 20px;
+    right: 20px;
+    background: #0a84ff;
+    color: white;
+    border: none;
+    border-radius: 8px;
+    padding: 6px 10px;
+    cursor: pointer;
+    font-size: 16px;
+    z-index: 1000;
+    transition: background 0.3s;
+    line-height: 1.2;
+}
+.menu-btn:hover { background: #0066cc; }
+
 .dropdown-menu { display: none; position: fixed; top: 50px; right: 20px; background: #3a3a3c; border-radius: 10px; overflow: hidden; min-width: 160px; box-shadow: 0 4px 12px rgba(0,0,0,0.3); z-index: 1000; }
-.dropdown-menu a { display: block; padding: 10px 15px; text-align: left; color: #f2f2f2; text-decoration: none; border-bottom: 1px solid #4a4a4c; }
+.dropdown-menu a { display: block; padding: 10px 15px; text-align: left; color: #f2f2f2; text-decoration: none; border-bottom: 1px solid #4a4a4c; transition: background 0.2s; font-size: 16px; }
+.dropdown-menu a:last-child { border-bottom: none; }
 .dropdown-menu a:hover { background: #1b9aff; }
+
 .dev-email { display: flex; justify-content: center; gap: 20px; font-size: 1em; max-width: 700px; margin: 20px auto; flex-wrap: wrap; }
-@media (max-width: 600px) { .dev-email { flex-direction: column; gap: 10px; } }
+@media (max-width: 600px) { .dev-email { flex-direction: column; align-items: center; gap: 10px; font-size: 0.95em; } }
 </style>
 </head>
 <body>
 <button class="menu-btn" id="menuBtn">☰</button>
 <div class="dropdown-menu" id="dropdownMenu">
     <a href="#" id="langToggle">🌐 切换语言</a>
-    <a href="#" id="privacyLink">🛡️ 隐私政策</a>
+    <a href="privacy.html?lang=zh-CN" id="privacyLink">🛡️ 隐私政策</a>
 </div>
 <h1 id="title"></h1>
 <div class="game-desc" id="gameDesc"></div>
 <div class="download-row">
     <div class="download-item">
-        <a class="download-btn ios" id="iosBtn" href="https://apps.apple.com/app/baimahjong/id6749504746" target="_blank">iOS</a>
+        <a class="download-btn ios" id="iosBtn" target="_blank" rel="noopener noreferrer">iOS</a>
     </div>
     <div class="download-item">
-        <a class="download-btn android" id="androidBtn" href="javascript:void(0)">Android</a>
-        <span class="coming-soon" id="comingSoon"></span>
+        <a class="download-btn android disabled" id="androidBtn" href="javascript:void(0)">Android</a>
+        <span class="coming-soon" id="comingSoon">敬请期待</span>
     </div>
 </div>
 <div class="dev-email" id="devEmail"></div>
 <footer id="footer"></footer>
-
 <script>
+const menuBtn = document.getElementById('menuBtn');
+const dropdownMenu = document.getElementById('dropdownMenu');
+const langToggle = document.getElementById('langToggle');
+const privacyLink = document.getElementById('privacyLink');
+const iosBtn = document.getElementById('iosBtn');
+const androidBtn = document.getElementById('androidBtn');
+
+const urlParams = new URLSearchParams(window.location.search);
+const langParam = urlParams.get('lang');
+let currentLang = (langParam === 'zh-CN' || langParam === 'en')
+    ? langParam
+    : ((navigator.language || '').toLowerCase().startsWith('zh') ? 'zh-CN' : 'en');
+
 const textData = {
     'zh-CN': {
         title: '摆麻将',
-        iosText: 'iOS 下载',
+        iosText: 'iOS下载',
         androidText: '安卓下载',
-        comingSoon: '敬请期待',
-        devEmail: `<span>开发者：葛洪</span><span>📧 邮箱：<a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></span>`,
-        gameDesc: `<p>《摆麻将》是一款单人休闲麻将游戏。</p><p>游戏的灵感，来自开发者奶奶每天都会玩的单人麻将游戏。没有复杂的规则，也没有竞争压力。只需一张桌子、一副麻将，通过观察牌面、寻找组合，在思考与整理中享受一段安静而专注的时间。在她口中，这种简单而充满乐趣的玩法，就叫做“摆麻将”。</p><p>开发者希望将这种独特的麻将玩法带入数字世界，让更多人能够随时体验这份轻松与快乐。</p><p>游戏没有复杂系统，没有过多干扰，也不需要联网。打开游戏，按照自己的节奏慢慢思考，享受一局属于自己的安静时光。</p><p>希望这款小小的游戏，能够带给您片刻放松。如果您喜欢这份简单的快乐，也欢迎分享给您的家人和朋友，让更多人体验“摆麻将”的乐趣。</p>`,
-        footer: `© 2026 Ge Hong / IceSheet Studio\n版权所有`,
+        devEmail: "<span>开发者：葛洪</span><span>📧 联系邮箱：<a href='mailto:gehong01@gmail.com'>gehong01@gmail.com</a></span>",
+        gameDesc: "<p>游戏背景：</p><p>这是一款休闲麻将消除游戏，灵感来源于开发者奶奶每天都要玩的单人麻将游戏，老人家称之为“摆麻将”。</p><p>作者致力于复刻这款经典麻将游戏，将其搬进数字世界。如果它能带给您快乐，欢迎分享给您的家人和朋友，让更多人一起享受《摆麻将》的乐趣。</p>",
+        footer: "© 2026 Ge Hong / IceSheet Studio\n版权所有",
         btnText: '🌐 English',
-        privacyText: '🛡️ 隐私政策'
+        privacyText: '🛡️ 隐私政策',
+        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
+        comingSoon: "敬请期待"
     },
     'en': {
         title: 'Bai Mahjong',
         iosText: 'iOS Download',
         androidText: 'Android Download',
-        comingSoon: 'Coming Soon',
-        devEmail: `<span>Developer: Ge Hong</span><span>📧 Email: <a href="mailto:gehong01@gmail.com">gehong01@gmail.com</a></span>`,
-        gameDesc: `<p>Bai Mahjong is a relaxing single-player Mahjong game.</p><p>The idea behind the game came from the way of playing Mahjong that the developer's grandmother enjoys every day. With no complicated rules and no pressure to compete, it is simply about sitting down with a set of Mahjong tiles, observing the board, finding combinations, and enjoying a quiet moment of focus and relaxation. She calls this simple and enjoyable way of playing "Bai Mahjong."</p><p>The developer wanted to turn this simple Mahjong experience into a digital game, so more people could enjoy it anytime, anywhere.</p><p>Bai Mahjong keeps things simple. There are no complicated systems, unnecessary distractions, and no internet connection required. Just open the game, play at your own pace, and enjoy a relaxing moment of your own.</p><p>We hope this little game brings you a moment of calm and joy. If you enjoy Bai Mahjong, feel free to share it with your family and friends, so more people can discover this unique experience.</p>`,
-        footer: `© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved`,
+        devEmail: "<span>Developer: Ge Hong</span><span>📧 Contact Email: <a href='mailto:gehong01@gmail.com'>gehong01@gmail.com</a></span>",
+        gameDesc: "<p>Game Background：</p><p>This is a relaxing Mahjong tile-matching game, inspired by the single-player Mahjong game that developer's grandmother played daily, called \"Bai Mahjong.\"</p><p>The developer strives to faithfully recreate this classic Mahjong experience. If you enjoy it, feel free to share it with your family and friends so that more people can play Bai Mahjong.</p>",
+        footer: "© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved",
         btnText: '🌐 中文',
-        privacyText: '🛡️ Privacy Policy'
+        privacyText: '🛡️ Privacy Policy',
+        appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
+        comingSoon: "Coming Soon"
     }
 };
-
-let currentLang = (new URLSearchParams(window.location.search).get('lang') === 'zh-CN') ? 'zh-CN' : 'en';
 
 function renderText(lang){
     document.getElementById('title').textContent = textData[lang].title;
     document.getElementById('gameDesc').innerHTML = textData[lang].gameDesc;
     document.getElementById('devEmail').innerHTML = textData[lang].devEmail;
-    document.getElementById('iosBtn').textContent = textData[lang].iosText;
-    document.getElementById('androidBtn').textContent = textData[lang].androidText;
+    iosBtn.href = textData[lang].appStoreLink;
     document.getElementById('comingSoon').textContent = textData[lang].comingSoon;
-    document.getElementById('langToggle').textContent = textData[lang].btnText;
-    document.getElementById('privacyLink').textContent = textData[lang].privacyText;
-    document.getElementById('privacyLink').href = 'privacy.html?lang=' + lang;
+    langToggle.textContent = textData[lang].btnText;
+    privacyLink.textContent = textData[lang].privacyText;
+    privacyLink.href = 'privacy.html?lang=' + lang;
     document.getElementById('footer').textContent = textData[lang].footer;
 }
 
 renderText(currentLang);
-document.getElementById('menuBtn').addEventListener('click', () => { 
-    const menu = document.getElementById('dropdownMenu');
-    menu.style.display = menu.style.display === 'block' ? 'none' : 'block'; 
+
+menuBtn.addEventListener('click', ()=> { 
+    dropdownMenu.style.display = dropdownMenu.style.display==='block'?'none':'block'; 
 });
-document.getElementById('langToggle').addEventListener('click', (e) => { 
+
+langToggle.addEventListener('click', e=>{ 
     e.preventDefault(); 
-    currentLang = currentLang === 'zh-CN' ? 'en' : 'zh-CN'; 
+    currentLang = currentLang==='zh-CN'?'en':'zh-CN'; 
     renderText(currentLang); 
-    window.history.replaceState({}, '', '?lang=' + currentLang);
-    document.getElementById('dropdownMenu').style.display = 'none'; 
+    const newUrl = window.location.pathname + '?lang=' + currentLang;
+    window.history.replaceState({}, '', newUrl);
+    dropdownMenu.style.display='none'; 
+});
+
+document.addEventListener('click', e=>{ 
+    if(!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)){ 
+        dropdownMenu.style.display='none'; 
+    } 
 });
 </script>
 </body>
