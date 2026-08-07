@@ -106,6 +106,71 @@
   .dropdown-menu a:last-child{ border-bottom:none; }
   .dropdown-menu a:hover{ background:rgba(62,142,92,0.16); color:var(--ivory); }
 
+  /* ---------- language switcher ---------- */
+  .lang-btn{
+    position:fixed;
+    top:18px; right:66px;
+    height:38px;
+    padding:0 12px;
+    border-radius:10px;
+    border:1px solid var(--line);
+    background:rgba(244,238,224,0.05);
+    color:var(--ivory);
+    display:flex; align-items:center; gap:6px;
+    font-size:13.5px;
+    font-weight:500;
+    cursor:pointer;
+    z-index:1000;
+    transition: background .2s ease, transform .15s ease;
+    white-space:nowrap;
+  }
+  .lang-btn:hover{ background:rgba(244,238,224,0.1); }
+  .lang-btn:active{ transform:scale(0.96); }
+  .lang-btn .lang-icon{ font-size:15px; line-height:1; }
+  /* Show only the globe on the main button; language names stay in the dropdown. */
+  .lang-btn .lang-label{ display:none; }
+  .lang-btn{ width:38px; padding:0; justify-content:center; }
+
+  .lang-dropdown{
+    display:none;
+    position:fixed;
+    top:62px; right:66px;
+    background:#1b1f1f;
+    border:1px solid var(--line);
+    border-radius:12px;
+    overflow:hidden;
+    min-width:150px;
+    box-shadow:0 14px 32px -8px var(--shadow-deep);
+    z-index:1000;
+  }
+  .lang-dropdown button{
+    all:unset;
+    box-sizing:border-box;
+    display:flex;
+    align-items:center;
+    justify-content:space-between;
+    width:100%;
+    padding:12px 16px;
+    text-align:left;
+    color:var(--ivory-dim);
+    font-size:14.5px;
+    font-family:inherit;
+    cursor:pointer;
+    border-bottom:1px solid var(--line);
+    transition: background .15s ease, color .15s ease;
+  }
+  .lang-dropdown button:last-child{ border-bottom:none; }
+  .lang-dropdown button:hover{ background:rgba(62,142,92,0.16); color:var(--ivory); }
+  .lang-dropdown button.active{ color:var(--gold); font-weight:600; }
+  .lang-dropdown button .check{ opacity:0; font-size:12px; }
+  .lang-dropdown button.active .check{ opacity:1; }
+
+  @media (max-width:380px){
+    .lang-btn span.lang-label{ display:none; }
+    .lang-btn{ padding:0; width:38px; justify-content:center; }
+    .lang-dropdown{ right:62px; }
+  }
+
   /* ---------- stage ---------- */
   .stage{
     width:100%;
@@ -343,9 +408,17 @@
   <span class="sparkle s4"></span>
   <span class="sparkle s5"></span>
 
+  <button class="lang-btn" id="langBtn" aria-label="language" aria-haspopup="true" aria-expanded="false">
+    <span class="lang-icon">🌐</span><span class="lang-label" id="langBtnLabel">简体中文</span>
+  </button>
+  <div class="lang-dropdown" id="langDropdown" role="menu">
+    <button type="button" data-lang="zh-CN" role="menuitemradio"><span>简体中文</span><span class="check">✓</span></button>
+    <button type="button" data-lang="zh-TW" role="menuitemradio"><span>繁體中文</span><span class="check">✓</span></button>
+    <button type="button" data-lang="en" role="menuitemradio"><span>English</span><span class="check">✓</span></button>
+  </div>
+
   <button class="menu-btn" id="menuBtn" aria-label="menu">☰</button>
   <div class="dropdown-menu" id="dropdownMenu">
-    <a href="#" id="langToggle">🌐 切换语言</a>
     <a href="privacy.html?lang=zh-CN" id="privacyLink">🛡️ 隐私政策</a>
   </div>
 
@@ -360,7 +433,7 @@
 
     <div class="info-row">
       <button class="info-pill" id="bgBtn"><span class="pill-icon">📜</span><span id="bgBtnText">游戏背景</span></button>
-      <button class="info-pill" id="howBtn"><span class="pill-icon">🕹️</span><span id="howBtnText">怎么玩</span></button>
+      <button class="info-pill" id="howBtn"><span class="pill-icon">🕹️</span><span id="howBtnText">玩法介绍</span></button>
     </div>
 
     <div class="dl-label" id="dlLabel">下载</div>
@@ -395,7 +468,7 @@
   <div class="modal-overlay" id="howModal">
     <div class="modal-card">
       <button class="modal-close" id="howClose">收起 ✕</button>
-      <div class="modal-label" id="howModalLabel">怎么玩</div>
+      <div class="modal-label" id="howModalLabel">玩法介绍</div>
       <div id="howModalBody"></div>
     </div>
   </div>
@@ -403,7 +476,9 @@
 <script>
   const menuBtn = document.getElementById('menuBtn');
   const dropdownMenu = document.getElementById('dropdownMenu');
-  const langToggle = document.getElementById('langToggle');
+  const langBtn = document.getElementById('langBtn');
+  const langBtnLabel = document.getElementById('langBtnLabel');
+  const langDropdown = document.getElementById('langDropdown');
   const privacyLink = document.getElementById('privacyLink');
   const iosBtn = document.getElementById('iosBtn');
   const androidBtn = document.getElementById('androidBtn');
@@ -415,8 +490,9 @@
   const bgClose = document.getElementById('bgClose');
   const howClose = document.getElementById('howClose');
 
-  // Supported languages, in toggle cycle order
-  const LANG_CYCLE = ['zh-CN', 'zh-TW', 'en'];
+  // Supported languages
+  const LANGS = ['zh-CN', 'zh-TW', 'en'];
+  const LANG_NAMES = { 'zh-CN': '简体中文', 'zh-TW': '繁體中文', 'en': 'English' };
 
   const urlParams = new URLSearchParams(window.location.search);
   const langParam = urlParams.get('lang');
@@ -431,20 +507,19 @@
     return 'en';
   }
 
-  let currentLang = LANG_CYCLE.includes(langParam) ? langParam : detectLang();
+  let currentLang = LANGS.includes(langParam) ? langParam : detectLang();
 
   const textData = {
     'zh-CN': {
       title: '摆麻将',
       tagline: '一款永远玩不腻的麻将配对消除游戏',
       bgBtnText: '游戏背景',
-      howBtnText: '怎么玩',
+      howBtnText: '玩法介绍',
       dlLabel: '下载',
       iosText: 'iOS',
       androidText: 'Android',
       devEmail: "开发者：葛洪　联系邮箱：<a href='mailto:gehong01@gmail.com'>gehong01@gmail.com</a>",
       copyright: "© 2026 Ge Hong / IceSheet Studio\n版权所有",
-      btnText: '🌐 繁體中文',
       privacyText: '🛡️ 隐私政策',
       appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
       playStoreLink: "https://play.google.com/store/apps/details?id=com.icesheetstudio.baimahjong",
@@ -454,7 +529,7 @@
         <p>这是一款休闲麻将消除游戏，灵感来源于开发者奶奶每天都要玩的单人麻将游戏，老人家称之为"摆麻将"。</p>
         <p>作者致力于复刻这款经典麻将游戏，将其搬进数字世界。如果它能带给您快乐，欢迎分享给您的家人和朋友，让更多人一起享受《摆麻将》的乐趣。</p>
       `,
-      howModalLabel: '怎么玩',
+      howModalLabel: '玩法介绍',
       howModalBody: `
         <p class="bullet"><b>▸ 移动</b><br>点击并拖动麻将，相连的麻将会作为一个整体移动。</p>
         <p class="bullet"><b>▸ 消除</b><br>移动后，两个相同的麻将之间无阻挡时会自动消除。三张麻将同时可被消除时，它们会被标记，需手动选择其中一对进行消除。</p>
@@ -466,13 +541,12 @@
       title: '擺麻將',
       tagline: '一款永遠玩不膩的麻將配對消除遊戲',
       bgBtnText: '遊戲背景',
-      howBtnText: '怎麼玩',
+      howBtnText: '玩法介紹',
       dlLabel: '下載',
       iosText: 'iOS',
       androidText: 'Android',
       devEmail: "開發者：葛洪　聯絡信箱：<a href='mailto:gehong01@gmail.com'>gehong01@gmail.com</a>",
       copyright: "© 2026 Ge Hong / IceSheet Studio\n版權所有",
-      btnText: '🌐 English',
       privacyText: '🛡️ 隱私政策',
       appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
       playStoreLink: "https://play.google.com/store/apps/details?id=com.icesheetstudio.baimahjong",
@@ -482,7 +556,7 @@
         <p>這是一款休閒麻將消除遊戲，靈感來源於開發者奶奶每天都要玩的單人麻將遊戲，老人家稱之為「擺麻將」。</p>
         <p>作者致力於復刻這款經典麻將遊戲，將其搬進數位世界。如果它能帶給您快樂，歡迎分享給您的家人和朋友，讓更多人一起享受《擺麻將》的樂趣。</p>
       `,
-      howModalLabel: '怎麼玩',
+      howModalLabel: '玩法介紹',
       howModalBody: `
         <p class="bullet"><b>▸ 移動</b><br>點擊並拖動麻將，相連的麻將會作為一個整體移動。</p>
         <p class="bullet"><b>▸ 消除</b><br>移動後，兩個相同的麻將之間無阻擋時會自動消除。三張麻將同時可被消除時，它們會被標記，需手動選擇其中一對進行消除。</p>
@@ -500,7 +574,6 @@
       androidText: 'Android',
       devEmail: "Developer: Ge Hong&nbsp;&nbsp;&nbsp;Contact: <a href='mailto:gehong01@gmail.com'>gehong01@gmail.com</a>",
       copyright: "© 2026 Ge Hong / IceSheet Studio\nAll Rights Reserved",
-      btnText: '🌐 简体中文',
       privacyText: '🛡️ Privacy Policy',
       appStoreLink: "https://apps.apple.com/app/baimahjong/id6749504746",
       playStoreLink: "https://play.google.com/store/apps/details?id=com.icesheetstudio.baimahjong",
@@ -533,7 +606,6 @@
     document.getElementById('copyrightText').textContent = t.copyright;
     iosBtn.href = t.appStoreLink;
     androidBtn.href = t.playStoreLink;
-    langToggle.textContent = t.btnText;
     privacyLink.textContent = t.privacyText;
     privacyLink.href = 'privacy.html?lang=' + lang;
     bgClose.textContent = t.closeText;
@@ -543,28 +615,50 @@
     document.getElementById('howModalLabel').textContent = t.howModalLabel;
     document.getElementById('howModalBody').innerHTML = t.howModalBody;
     document.documentElement.lang = lang;
+
+    // language button + menu reflect the *current* language directly
+    langBtnLabel.textContent = LANG_NAMES[lang];
+    langDropdown.querySelectorAll('button[data-lang]').forEach(btn => {
+      btn.classList.toggle('active', btn.dataset.lang === lang);
+    });
   }
 
   renderText(currentLang);
 
-  menuBtn.addEventListener('click', (e) => {
-    e.stopPropagation();
-    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
-  });
-
-  langToggle.addEventListener('click', e => {
-    e.preventDefault();
-    const idx = LANG_CYCLE.indexOf(currentLang);
-    currentLang = LANG_CYCLE[(idx + 1) % LANG_CYCLE.length];
+  function selectLang(lang){
+    if (lang === currentLang) { langDropdown.style.display = 'none'; return; }
+    currentLang = lang;
     renderText(currentLang);
     const newUrl = window.location.pathname + '?lang=' + currentLang;
     window.history.replaceState({}, '', newUrl);
+    langDropdown.style.display = 'none';
+  }
+
+  menuBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
+    langDropdown.style.display = 'none';
+    dropdownMenu.style.display = dropdownMenu.style.display === 'block' ? 'none' : 'block';
+  });
+
+  langBtn.addEventListener('click', (e) => {
+    e.stopPropagation();
     dropdownMenu.style.display = 'none';
+    const willOpen = langDropdown.style.display !== 'block';
+    langDropdown.style.display = willOpen ? 'block' : 'none';
+    langBtn.setAttribute('aria-expanded', String(willOpen));
+  });
+
+  langDropdown.querySelectorAll('button[data-lang]').forEach(btn => {
+    btn.addEventListener('click', () => selectLang(btn.dataset.lang));
   });
 
   document.addEventListener('click', e => {
     if (!menuBtn.contains(e.target) && !dropdownMenu.contains(e.target)) {
       dropdownMenu.style.display = 'none';
+    }
+    if (!langBtn.contains(e.target) && !langDropdown.contains(e.target)) {
+      langDropdown.style.display = 'none';
+      langBtn.setAttribute('aria-expanded', 'false');
     }
   });
 
